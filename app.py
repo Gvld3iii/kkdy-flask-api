@@ -48,11 +48,13 @@ def mint_nft():
         return jsonify({"error": "Internal Server Error"}), 500
 
 # ✅ Debugging: Print all registered routes
-@app.before_first_request
 def print_routes():
-    print("Registered Routes:", app.url_map)
+    with app.app_context():
+        print("Registered Routes:", app.url_map)
 
 # ✅ Ensure Railway uses the correct port
 if __name__ == "__main__":
+    print_routes()  # ✅ Now correctly prints routes before app starts
     port = int(os.environ.get("PORT", 5000))  # Use 5000 as fallback if PORT is missing
     app.run(host="0.0.0.0", port=port)
+
